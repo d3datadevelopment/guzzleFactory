@@ -1,8 +1,10 @@
 <?php
 
 /**
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (c) D3 Data Development (Inh. Thomas Dartsch)
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  *
  * https://www.d3data.de
  *
@@ -10,6 +12,8 @@
  * @author    D3 Data Development - Daniel Seifert <info@shopmodule.com>
  * @link      https://www.oxidmodule.com
  */
+
+declare(strict_types=1);
 
 namespace D3\GuzzleFactory;
 
@@ -21,6 +25,7 @@ use Psr\Log\LoggerInterface;
 
 trait LoggerTrait
 {
+    /** @var LoggerInterface[]  */
     protected array $loggers = [];
     protected ?int $messageLevel = null;
 
@@ -36,7 +41,7 @@ trait LoggerTrait
             new StreamHandler(
                 OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . $fileName,
                 $logLevel
-            ):
+            ) :
             new RotatingFileHandler(
                 OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . $fileName,
                 $maxFiles,
@@ -52,6 +57,9 @@ trait LoggerTrait
         $this->loggers[md5(serialize($logger))] = $logger;
     }
 
+    /**
+     * @return LoggerInterface[]
+     */
     protected function getLoggers(): array
     {
         return $this->loggers;
@@ -62,7 +70,7 @@ trait LoggerTrait
         return $this->messageLevel ?? Logger::INFO;
     }
 
-    public function setMessageLevel( ?int $messageLevel ): void
+    public function setMessageLevel(?int $messageLevel): void
     {
         $this->messageLevel = $messageLevel;
     }

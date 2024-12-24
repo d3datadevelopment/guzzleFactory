@@ -1,8 +1,10 @@
 <?php
 
 /**
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (c) D3 Data Development (Inh. Thomas Dartsch)
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  *
  * https://www.d3data.de
  *
@@ -10,6 +12,8 @@
  * @author    D3 Data Development - Daniel Seifert <info@shopmodule.com>
  * @link      https://www.oxidmodule.com
  */
+
+declare(strict_types=1);
 
 namespace D3\GuzzleFactory;
 
@@ -26,7 +30,7 @@ trait HeaderTrait
         return $this->accept ?? 'application/json';
     }
 
-    public function setAccept( ?string $accept ): void
+    public function setAccept(?string $accept): void
     {
         $this->accept = $accept;
     }
@@ -36,7 +40,7 @@ trait HeaderTrait
         return $this->contentType ?? 'application/json';
     }
 
-    public function setContentType( ?string $contentType ): void
+    public function setContentType(?string $contentType): void
     {
         $this->contentType = $contentType;
     }
@@ -46,7 +50,7 @@ trait HeaderTrait
         return $this->userAgent ?? Utils::defaultUserAgent();
     }
 
-    public function setUserAgent( ?string $userAgent ): void
+    public function setUserAgent(?string $userAgent): void
     {
         $this->userAgent = $userAgent;
     }

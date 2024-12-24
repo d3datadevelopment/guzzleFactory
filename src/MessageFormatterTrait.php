@@ -1,8 +1,10 @@
 <?php
 
 /**
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (c) D3 Data Development (Inh. Thomas Dartsch)
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  *
  * https://www.d3data.de
  *
@@ -10,6 +12,8 @@
  * @author    D3 Data Development - Daniel Seifert <info@shopmodule.com>
  * @link      https://www.oxidmodule.com
  */
+
+declare(strict_types=1);
 
 namespace D3\GuzzleFactory;
 
@@ -26,13 +30,19 @@ trait MessageFormatterTrait
         return $this->formatter ?? $this->getDefaultMessageFormatter();
     }
 
-    public function setMessageFormatter( ?string $template, ?array $anonymisations = null, ?string $replaceChar = null): void
+    /**
+     * @param string|null $template
+     * @param string[]|null $anonymisations
+     * @param string|null $replaceChar
+     * @return void
+     */
+    public function setMessageFormatter(?string $template, ?array $anonymisations = null, ?string $replaceChar = null): void
     {
-        $template = $template ?? $this->getDefaultFormatterTemplate();
+        $template ??= $this->getDefaultFormatterTemplate();
 
         $this->formatter =
             is_null($anonymisations) ?
-                $this->getDefaultMessageFormatter( $template) :
+                $this->getDefaultMessageFormatter($template) :
                 new sensitiveMessageFormatter(
                     $template,
                     $anonymisations,
@@ -42,7 +52,7 @@ trait MessageFormatterTrait
 
     protected function getDefaultMessageFormatter(?string $template = null): MessageFormatterInterface
     {
-        $template = $template ?? $this->getDefaultFormatterTemplate();
+        $template ??= $this->getDefaultFormatterTemplate();
         return new MessageFormatter(
             $template,
         );
