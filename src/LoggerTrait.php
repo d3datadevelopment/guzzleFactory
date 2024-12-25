@@ -17,36 +17,32 @@ declare(strict_types=1);
 
 namespace D3\GuzzleFactory;
 
+use D3\GuzzleFactory\Apps\OxidLoggerTrait;
+use Exception;
+use InvalidArgumentException;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use OxidEsales\Eshop\Core\Registry;
 use Psr\Log\LoggerInterface;
 
 trait LoggerTrait
 {
+    use OxidLoggerTrait;
+
     /** @var LoggerInterface[]  */
     protected array $loggers = [];
     protected ?int $messageLevel = null;
 
-    public function addOxidLogger(): void
-    {
-        $this->loggers['oxid'] = Registry::getLogger();
-    }
-
-    public function addFileLogger(string $loggerName, string $fileName, int $logLevel = Logger::INFO, ?int $maxFiles = null): void
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
+    public function addFileLogger(string $loggerName, string $filePath, int $logLevel = Logger::INFO, ?int $maxFiles = null): void
     {
         $logger = new Logger($loggerName);
         $stream_handler = is_null($maxFiles) ?
-            new StreamHandler(
-                OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . $fileName,
-                $logLevel
-            ) :
-            new RotatingFileHandler(
-                OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . $fileName,
-                $maxFiles,
-                $logLevel
-            );
+            new StreamHandler($filePath, $logLevel) :
+            new RotatingFileHandler($filePath, $maxFiles, $logLevel);
         $logger->pushHandler($stream_handler);
 
         $this->loggers[$loggerName] = $logger;

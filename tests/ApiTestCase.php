@@ -33,7 +33,7 @@ abstract class ApiTestCase extends TestCase
      * @return mixed
      * @throws ReflectionException
      */
-    public function callMethod(object $object, string $methodName, array $arguments = []): mixed
+    public function callMethod(object $object, string $methodName, array $arguments = [])
     {
         $class = new ReflectionClass($object);
         $method = $class->getMethod($methodName);
@@ -65,7 +65,7 @@ abstract class ApiTestCase extends TestCase
      * @return mixed
      * @throws ReflectionException
      */
-    public function getValue(object $object, string $valueName): mixed
+    public function getValue(object $object, string $valueName)
     {
         $reflection = new ReflectionClass($object);
         $property = $reflection->getProperty($valueName);

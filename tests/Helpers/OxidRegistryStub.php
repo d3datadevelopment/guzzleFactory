@@ -13,23 +13,14 @@
  * @link      https://www.oxidmodule.com
  */
 
-declare(strict_types=1);
+namespace D3\OxidGuzzleFactory\tests\Helpers;
 
-namespace D3\OxidGuzzleFactory\tests;
+use Monolog\Logger;
 
-use D3\OxidGuzzleFactory\GuzzleFactory;
-
-class GuzzleFactoryTest extends ApiTestCase
+class OxidRegistryStub
 {
-    /**
-     * @test
-     * @return void
-     * @covers \D3\OxidGuzzleFactory\GuzzleFactory::create
-     */
-    public function testCreate(): void
+    public static function getLogger(): Logger
     {
-        $instance = GuzzleFactory::create();
-
-        $this->assertInstanceOf(GuzzleFactory::class, $instance);
+        return new Logger('loggerFixture');
     }
 }
