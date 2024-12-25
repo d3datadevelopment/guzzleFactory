@@ -13,7 +13,7 @@
  * @link      https://www.oxidmodule.com
  */
 
-namespace D3\OxidGuzzleFactory\tests\Helpers;
+namespace D3\GuzzleFactory\tests\Helpers;
 
 use Monolog\Logger;
 

@@ -13,7 +13,7 @@
  * @link      https://www.oxidmodule.com
  */
 
-use D3\OxidGuzzleFactory\tests\Helpers\OxidRegistryStub;
+use D3\GuzzleFactory\tests\Helpers\OxidRegistryStub;
 
 const OX_BASE_PATH = __DIR__;
 
