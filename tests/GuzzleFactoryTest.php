@@ -15,16 +15,19 @@
 
 declare(strict_types=1);
 
-namespace D3\OxidGuzzleFactory\tests;
+namespace D3\GuzzleFactory\tests;
 
-use D3\OxidGuzzleFactory\GuzzleFactory;
+use D3\GuzzleFactory\GuzzleFactory;
 
+/**
+ * @coversNothing
+ */
 class GuzzleFactoryTest extends ApiTestCase
 {
     /**
      * @test
      * @return void
-     * @covers \D3\OxidGuzzleFactory\GuzzleFactory::create
+     * @covers \D3\GuzzleFactory\GuzzleFactory::create
      */
     public function testCreate(): void
     {

@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace D3\OxidGuzzleFactory\tests;
+namespace D3\GuzzleFactory\tests;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
