@@ -29,6 +29,8 @@ use ReflectionException;
 class GuzzleFactoryTest extends ApiTestCase
 {
     use HeaderTestTrait;
+    use LoggerTestTrait;
+    use MessageFormatterTestTrait;
 
     /**
      * @test
