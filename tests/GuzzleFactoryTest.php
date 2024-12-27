@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace D3\GuzzleFactory\tests;
 
 use D3\GuzzleFactory\GuzzleFactory;
+use D3\GuzzleFactory\tests\Apps\OxidLoggerTestTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Monolog\Logger;
@@ -31,6 +32,7 @@ class GuzzleFactoryTest extends ApiTestCase
     use HeaderTestTrait;
     use LoggerTestTrait;
     use MessageFormatterTestTrait;
+    use OxidLoggerTestTrait;
 
     /**
      * @test

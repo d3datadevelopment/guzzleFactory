@@ -33,10 +33,10 @@ trait OxidLoggerTrait
 
     public function getOxidLogPath(string $fileName): string
     {
-        if (!defined(OX_BASE_PATH)) {
+        if (!class_exists(Registry::class)) {
             throw new RuntimeException(__METHOD__.' can executed in OXID eShop installations only');
         }
 
-        return OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . $fileName;
+        return OX_BASE_PATH . '/log' . DIRECTORY_SEPARATOR . $fileName;
     }
 }
