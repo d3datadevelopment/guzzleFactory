@@ -1,3 +1,7 @@
+![stability mature](https://img.shields.io/badge/stability-mature-008000.svg)
+[![latest tag](https://img.shields.io/packagist/v/d3/guzzle-factory?label=release)](https://packagist.org/packages/d3/guzzle-factory)
+[![MIT License](https://img.shields.io/packagist/l/d3/guzzle-factory)](https://git.d3data.de/D3Public/guzzleFactory/src/branch/main/LICENSE.md)
+
 # Guzzle Factory
 
 Guzzle factory for everyday simple configuration
