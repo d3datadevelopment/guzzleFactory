@@ -44,6 +44,25 @@ trait OxidLoggerTestTrait
      * @test
      * @return void
      * @throws ReflectionException
+     * @covers \D3\GuzzleFactory\GuzzleFactory::addCombinedOxidAndFileLogger
+     */
+    public function testAddCombinedOxidAndFileLoggerWithoutOxid(): void
+    {
+        $sut = GuzzleFactory::create();
+
+        $this->expectException(RuntimeException::class);
+
+        $this->callMethod(
+            $sut,
+            'addCombinedOxidAndFileLogger',
+            ['nameFixture', 'file/path.log', 1, 5]
+        );
+    }
+
+    /**
+     * @test
+     * @return void
+     * @throws ReflectionException
      * @covers \D3\GuzzleFactory\GuzzleFactory::getOxidLogPath
      */
     public function testGetOxidLogPathWithoutOxid(): void
@@ -82,6 +101,32 @@ trait OxidLoggerTestTrait
         $loggers = $this->getValue($sut, 'loggers');
         $this->assertArrayHasKey('oxid', $loggers);
         $this->assertInstanceOf(Logger::class, $loggers['oxid']);
+    }
+
+    /**
+     * @test
+     * @return void
+     * @throws ReflectionException
+     * @covers \D3\GuzzleFactory\GuzzleFactory::addCombinedOxidAndFileLogger
+     */
+    public function testAddCombinedOxidAndFileLoggerInOxid(): void
+    {
+        require_once __DIR__.'/../Helpers/classAliases.php';
+
+        $sut = GuzzleFactory::create();
+
+        $this->setValue($sut, 'loggers', ['oxid' => 1]);
+
+        $this->callMethod(
+            $sut,
+            'addCombinedOxidAndFileLogger',
+            ['nameFixture', 'file/path.log', 1, 5]
+        );
+
+        $loggers = $this->getValue($sut, 'loggers');
+        $this->assertArrayHasKey('nameFixture', $loggers);
+        $this->assertArrayNotHasKey('oxid', $loggers);
+        $this->assertInstanceOf(Logger::class, $loggers['nameFixture']);
     }
 
     /**

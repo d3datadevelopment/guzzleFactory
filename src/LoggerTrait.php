@@ -20,6 +20,7 @@ namespace D3\GuzzleFactory;
 use D3\GuzzleFactory\Apps\OxidLoggerTrait;
 use Exception;
 use InvalidArgumentException;
+use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -37,15 +38,36 @@ trait LoggerTrait
      * @throws Exception
      * @throws InvalidArgumentException
      */
-    public function addFileLogger(string $loggerName, string $filePath, int $logLevel = Logger::INFO, ?int $maxFiles = null): void
+    public function addFileLogger(
+        string $loggerName,
+        string $filePath,
+        int $logLevel = Logger::INFO,
+        ?int $maxFiles = null
+    ): void
     {
         $logger = new Logger($loggerName);
-        $stream_handler = is_null($maxFiles) ?
-            new StreamHandler($filePath, $logLevel) :
-            new RotatingFileHandler($filePath, $maxFiles, $logLevel);
+        $stream_handler = $this->getFileLoggerStreamHandler($filePath, $logLevel, $maxFiles);
         $logger->pushHandler($stream_handler);
 
         $this->loggers[$loggerName] = $logger;
+    }
+
+    /**
+     * @param string $filePath
+     * @param int $logLevel
+     * @param int|null $maxFiles
+     * @return AbstractProcessingHandler
+     * @throws Exception
+     */
+    public function getFileLoggerStreamHandler(
+        string $filePath,
+        int $logLevel = Logger::INFO,
+        ?int $maxFiles = null
+    ): AbstractProcessingHandler
+    {
+        return is_null($maxFiles) ?
+            new StreamHandler($filePath, $logLevel) :
+            new RotatingFileHandler($filePath, $maxFiles, $logLevel);
     }
 
     public function addConfiguredLogger(LoggerInterface $logger): void

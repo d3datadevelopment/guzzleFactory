@@ -22,6 +22,7 @@ $guzzleFactory->setMessageFormatter(
     '{method} {uri} HTTP/{version} {req_body}'.PHP_EOL.'RESPONSE: {code} - {res_body}',
     ['myUsername', 'myPassword']
 );
+$guzzleFactory->setMessageLevel(Logger::INFO);
 $httpClient = $guzzleFactory->getGuzzle('https://remoteApi.com');
 ```
 

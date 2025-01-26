@@ -28,6 +28,7 @@ trait LoggerTestTrait
      * @test
      * @throws ReflectionException
      * @covers       \D3\GuzzleFactory\GuzzleFactory::addFileLogger
+     * @covers       \D3\GuzzleFactory\GuzzleFactory::getFileLoggerStreamHandler
      * @dataProvider addFileLoggerDataProvider
      */
     public function testAddFileLogger(int $logLevel, ?int $maxFiles, string $expectedHandlerClass): void
