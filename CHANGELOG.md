@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0](https://git.d3data.de/D3Public/guzzleFactory/releases/tag/1.0.0) - 2025-01-01
 ### Added
 - initial implementation
-    - can create am cutom Guzzle instance
+    - can create a custom Guzzle instance
       - "accept" option
       - "contentType" option
       - "userAgent" option
