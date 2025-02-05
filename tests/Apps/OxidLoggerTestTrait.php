@@ -16,6 +16,7 @@
 namespace D3\GuzzleFactory\tests\Apps;
 
 use D3\GuzzleFactory\GuzzleFactory;
+use D3\LoggerFactory\LoggerFactory;
 use Monolog\Logger;
 use ReflectionException;
 use RuntimeException;
@@ -37,25 +38,6 @@ trait OxidLoggerTestTrait
         $this->callMethod(
             $sut,
             'addOxidLogger',
-        );
-    }
-
-    /**
-     * @test
-     * @return void
-     * @throws ReflectionException
-     * @covers \D3\GuzzleFactory\GuzzleFactory::addCombinedOxidAndFileLogger
-     */
-    public function testAddCombinedOxidAndFileLoggerWithoutOxid(): void
-    {
-        $sut = GuzzleFactory::create();
-
-        $this->expectException(RuntimeException::class);
-
-        $this->callMethod(
-            $sut,
-            'addCombinedOxidAndFileLogger',
-            ['nameFixture', 'file/path.log', 1, 5]
         );
     }
 
@@ -109,11 +91,19 @@ trait OxidLoggerTestTrait
      * @throws ReflectionException
      * @covers \D3\GuzzleFactory\GuzzleFactory::addCombinedOxidAndFileLogger
      */
-    public function testAddCombinedOxidAndFileLoggerInOxid(): void
+    public function testAddCombinedOxidAndFileLogger(): void
     {
         require_once __DIR__.'/../Helpers/classAliases.php';
 
-        $sut = GuzzleFactory::create();
+        $loggerFactory = $this->getMockBuilder(LoggerFactory::class)
+            ->onlyMethods(['getCombinedOxidAndFileLogger'])
+            ->getMock();
+        $loggerFactory->expects($this->once())->method('getCombinedOxidAndFileLogger');
+
+        $sut = $this->getMockBuilder(GuzzleFactory::class)
+            ->onlyMethods(['getLoggerFactory'])
+            ->getMock();
+        $sut->method('getLoggerFactory')->willReturn($loggerFactory);
 
         $this->setValue($sut, 'loggers', ['oxid' => 1]);
 
