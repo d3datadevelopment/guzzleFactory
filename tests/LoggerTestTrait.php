@@ -16,8 +16,9 @@
 namespace D3\GuzzleFactory\tests;
 
 use D3\GuzzleFactory\GuzzleFactory;
+use D3\LoggerFactory\LoggerFactory;
 use Generator;
-use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use ReflectionException;
@@ -26,14 +27,44 @@ trait LoggerTestTrait
 {
     /**
      * @test
+     * @return void
      * @throws ReflectionException
-     * @covers       \D3\GuzzleFactory\GuzzleFactory::addFileLogger
-     * @covers       \D3\GuzzleFactory\GuzzleFactory::getFileLoggerStreamHandler
-     * @dataProvider addFileLoggerDataProvider
+     * @covers \D3\GuzzleFactory\GuzzleFactory::getLoggerFactory
      */
-    public function testAddFileLogger(int $logLevel, ?int $maxFiles, string $expectedHandlerClass): void
+    public function testGetLoggerFactory(): void
     {
         $sut = GuzzleFactory::create();
+
+        $this->assertInstanceOf(
+            LoggerFactory::class,
+            $this->callMethod(
+                $sut,
+                'getLoggerFactory',
+            )
+        );
+    }
+
+    /**
+     * @test
+     * @throws ReflectionException
+     * @covers       \D3\GuzzleFactory\GuzzleFactory::addFileLogger
+     * @dataProvider addFileLoggerDataProvider
+     */
+    public function testAddFileLogger(int $logLevel, ?int $maxFiles): void
+    {
+        $logger = $this->getMockBuilder(Logger::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $loggerFactory = $this->getMockBuilder(LoggerFactory::class)
+            ->onlyMethods(['getFileLogger'])
+            ->getMock();
+        $loggerFactory->expects($this->once())->method('getFileLogger')->willReturn($logger);
+
+        $sut = $this->getMockBuilder(GuzzleFactory::class)
+            ->onlyMethods(['getLoggerFactory'])
+            ->getMock();
+        $sut->method("getLoggerFactory")->willReturn($loggerFactory);
 
         $this->callMethod(
             $sut,
@@ -44,15 +75,11 @@ trait LoggerTestTrait
         $loggers = $this->getValue($sut, 'loggers');
         $this->assertArrayHasKey('nameFixture', $loggers);
         $this->assertInstanceOf(Logger::class, $loggers['nameFixture']);
-        $this->assertInstanceOf($expectedHandlerClass, $loggers['nameFixture']->getHandlers()[0]);
-        $this->assertSame($logLevel, $loggers['nameFixture']->popHandler('nameFixture')->getLevel());
     }
 
     public static function addFileLoggerDataProvider(): Generator
     {
-        yield 'no rotation' => [Logger::INFO, null, StreamHandler::class];
-        yield 'rotation 1' => [Logger::ERROR, 1, RotatingFileHandler::class];
-        yield 'rotation 20' => [Logger::DEBUG, 20, RotatingFileHandler::class];
+        yield [Logger::INFO, null];
     }
 
     /**

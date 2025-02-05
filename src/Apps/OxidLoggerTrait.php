@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace D3\GuzzleFactory\Apps;
 
+use D3\LoggerFactory\LoggerFactory;
 use Exception;
 use InvalidArgumentException;
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use OxidEsales\Eshop\Core\Registry;
 use RuntimeException;
@@ -46,25 +46,23 @@ trait OxidLoggerTrait
         ?int $maxFiles = null
     ): void
     {
-        if (!class_exists(Registry::class)) {
-            throw new RuntimeException(__METHOD__.' can executed in OXID eShop installations only');
-        }
-
-        $logger = new Logger($loggerName);
-        $stream_handler = $this->getFileLoggerStreamHandler($filePath, $logLevel, $maxFiles);
-        $logger->pushHandler($stream_handler);
-
-        $oxidLogFilePath = $this->getOxidLogPath('oxideshop.log');
-        $oxidStreamHandler = new StreamHandler($oxidLogFilePath, Logger::ERROR);
-        $logger->pushHandler($oxidStreamHandler);
-
         if (isset($this->loggers['oxid'])) {
             unset($this->loggers['oxid']);
         }
 
-        $this->loggers[$loggerName] = $logger;
+        $this->loggers[$loggerName] = $this->getLoggerFactory()->getCombinedOxidAndFileLogger(
+            $loggerName,
+            $filePath,
+            $logLevel,
+            $maxFiles
+        );
     }
 
+    /**
+     * @deprecated use LoggerFactory::getOxidLogPath
+     * @param string $fileName
+     * @return string
+     */
     public function getOxidLogPath(string $fileName): string
     {
         if (!class_exists(Registry::class)) {
