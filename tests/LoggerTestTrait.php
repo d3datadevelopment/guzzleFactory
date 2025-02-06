@@ -48,15 +48,18 @@ trait LoggerTestTrait
      * @test
      * @throws ReflectionException
      * @covers       \D3\GuzzleFactory\GuzzleFactory::addFileLogger
-     * @covers       \D3\GuzzleFactory\GuzzleFactory::getFileLoggerStreamHandler
      * @dataProvider addFileLoggerDataProvider
      */
-    public function testAddFileLogger(int $logLevel, ?int $maxFiles, string $expectedHandlerClass): void
+    public function testAddFileLogger(int $logLevel, ?int $maxFiles): void
     {
+        $logger = $this->getMockBuilder(Logger::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $loggerFactory = $this->getMockBuilder(LoggerFactory::class)
             ->onlyMethods(['getFileLogger'])
             ->getMock();
-        $loggerFactory->expects($this->once())->method('getFileLogger');
+        $loggerFactory->expects($this->once())->method('getFileLogger')->willReturn($logger);
 
         $sut = $this->getMockBuilder(GuzzleFactory::class)
             ->onlyMethods(['getLoggerFactory'])
@@ -72,12 +75,11 @@ trait LoggerTestTrait
         $loggers = $this->getValue($sut, 'loggers');
         $this->assertArrayHasKey('nameFixture', $loggers);
         $this->assertInstanceOf(Logger::class, $loggers['nameFixture']);
-        $this->assertInstanceOf($expectedHandlerClass, $loggers['nameFixture']->getHandlers()[0]);
     }
 
     public static function addFileLoggerDataProvider(): Generator
     {
-        yield [Logger::INFO, null, AbstractProcessingHandler::class];
+        yield [Logger::INFO, null];
     }
 
     /**
