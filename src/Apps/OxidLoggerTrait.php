@@ -43,7 +43,8 @@ trait OxidLoggerTrait
         string $loggerName,
         string $filePath,
         int $logLevel = Logger::INFO,
-        ?int $maxFiles = null
+        ?int $maxFiles = null,
+        array $specialHandlers = []
     ): void
     {
         if (isset($this->loggers['oxid'])) {
@@ -54,7 +55,8 @@ trait OxidLoggerTrait
             $loggerName,
             $filePath,
             $logLevel,
-            $maxFiles
+            $maxFiles,
+            $specialHandlers
         );
     }
 

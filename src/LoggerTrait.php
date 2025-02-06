@@ -46,11 +46,12 @@ trait LoggerTrait
         string $loggerName,
         string $filePath,
         int $logLevel = Logger::INFO,
-        ?int $maxFiles = null
+        ?int $maxFiles = null,
+        array $specialHandlers = []     // see LoggerFactory constants
     ): void
     {
         $this->loggers[$loggerName] = $this->getLoggerFactory()
-            ->getFileLogger($loggerName, $filePath, $logLevel, $maxFiles);
+            ->getFileLogger($loggerName, $filePath, $logLevel, $maxFiles, $specialHandlers);
     }
 
     /**
