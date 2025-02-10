@@ -18,7 +18,6 @@ namespace D3\GuzzleFactory\tests;
 use D3\GuzzleFactory\GuzzleFactory;
 use D3\LoggerFactory\LoggerFactory;
 use Generator;
-use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use ReflectionException;
@@ -80,6 +79,31 @@ trait LoggerTestTrait
     public static function addFileLoggerDataProvider(): Generator
     {
         yield [Logger::INFO, null];
+    }
+
+    /**
+     * @test
+     * @return void
+     * @throws ReflectionException
+     * @covers \D3\GuzzleFactory\GuzzleFactory::getFileLoggerStreamHandler
+     */
+    public function testGetFileLoggerStreamHandler(): void
+    {
+        $loggerFactory = $this->getMockBuilder(LoggerFactory::class)
+            ->onlyMethods(['getFileLoggerStreamHandler'])
+            ->getMock();
+        $loggerFactory->expects($this->once())->method('getFileLoggerStreamHandler');
+
+        $sut = $this->getMockBuilder(GuzzleFactory::class)
+            ->onlyMethods(['getLoggerFactory'])
+            ->getMock();
+        $sut->method("getLoggerFactory")->willReturn($loggerFactory);
+
+        $this->callMethod(
+            $sut,
+            'getFileLoggerStreamHandler',
+            ['file/path.log', Logger::ERROR, 2]
+        );
     }
 
     /**

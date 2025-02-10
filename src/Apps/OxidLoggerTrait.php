@@ -36,8 +36,15 @@ trait OxidLoggerTrait
     }
 
     /**
-     * @throws Exception
+     * @param string   $loggerName
+     * @param string   $filePath
+     * @param int      $logLevel
+     * @param int|null $maxFiles
+     * @param array<int|string, string|array<string, string|int>>  $specialHandlers
+     *
+     * @return void
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function addCombinedOxidAndFileLogger(
         string $loggerName,
@@ -45,8 +52,7 @@ trait OxidLoggerTrait
         int $logLevel = Logger::INFO,
         ?int $maxFiles = null,
         array $specialHandlers = []
-    ): void
-    {
+    ): void {
         if (isset($this->loggers['oxid'])) {
             unset($this->loggers['oxid']);
         }
@@ -56,6 +62,7 @@ trait OxidLoggerTrait
             $filePath,
             $logLevel,
             $maxFiles,
+            /**  @phpstan-ignore argument.type */
             $specialHandlers
         );
     }

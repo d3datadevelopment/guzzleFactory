@@ -39,8 +39,15 @@ trait LoggerTrait
     }
 
     /**
-     * @throws Exception
+     * @param string   $loggerName
+     * @param string   $filePath
+     * @param int      $logLevel
+     * @param int|null $maxFiles
+     * @param array<int|string, string|array<string, string|int>>  $specialHandlers
+     *
+     * @return void
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function addFileLogger(
         string $loggerName,
@@ -48,9 +55,9 @@ trait LoggerTrait
         int $logLevel = Logger::INFO,
         ?int $maxFiles = null,
         array $specialHandlers = []     // see LoggerFactory constants
-    ): void
-    {
+    ): void {
         $this->loggers[$loggerName] = $this->getLoggerFactory()
+            /**  @phpstan-ignore argument.type */
             ->getFileLogger($loggerName, $filePath, $logLevel, $maxFiles, $specialHandlers);
     }
 
@@ -66,8 +73,7 @@ trait LoggerTrait
         string $filePath,
         int $logLevel = Logger::INFO,
         ?int $maxFiles = null
-    ): AbstractProcessingHandler
-    {
+    ): AbstractProcessingHandler {
         return $this->getLoggerFactory()->getFileLoggerStreamHandler($filePath, $logLevel, $maxFiles);
     }
 
