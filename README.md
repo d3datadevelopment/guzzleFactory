@@ -17,7 +17,13 @@ composer require d3/guzzle-factory
 ```
 $guzzleFactory = GuzzleFactory::create();
 $guzzleFactory->setUserAgent('myApi-php-client/1.0.0'));
-$guzzleFactory->addFileLogger('myPluginLogger', 'plugin_requests.log', Logger::DEBUG, 5);
+$guzzleFactory->addFileLogger(
+    'myPluginLogger', 
+    'plugin_requests.log', 
+    Logger::DEBUG, 
+    5,
+    [\D3\LoggerFactory\LoggerFactory::SPECIAL_HANDLERS_BUFFERING]  // optional, see LoggerFactory for details
+);
 $guzzleFactory->setMessageFormatter(
     '{method} {uri} HTTP/{version} {req_body}'.PHP_EOL.'RESPONSE: {code} - {res_body}',
     ['myUsername', 'myPassword']
