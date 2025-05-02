@@ -17,65 +17,14 @@ declare(strict_types=1);
 
 namespace D3\GuzzleFactory;
 
-use D3\GuzzleFactory\Apps\OxidLoggerTrait;
-use D3\LoggerFactory\LoggerFactory;
-use Exception;
-use InvalidArgumentException;
-use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 trait LoggerTrait
 {
-    use OxidLoggerTrait;
-
     /** @var LoggerInterface[]  */
     protected array $loggers = [];
     protected ?int $messageLevel = null;
-
-    protected function getLoggerFactory(): LoggerFactory
-    {
-        return LoggerFactory::create();
-    }
-
-    /**
-     * @param string   $loggerName
-     * @param string   $filePath
-     * @param int      $logLevel
-     * @param int|null $maxFiles
-     * @param array<int|string, string|array<string, string|int>>  $specialHandlers
-     *
-     * @return void
-     * @throws InvalidArgumentException
-     * @throws Exception
-     */
-    public function addFileLogger(
-        string $loggerName,
-        string $filePath,
-        int $logLevel = Logger::INFO,
-        ?int $maxFiles = null,
-        array $specialHandlers = []     // see LoggerFactory constants
-    ): void {
-        $this->loggers[$loggerName] = $this->getLoggerFactory()
-            /**  @phpstan-ignore argument.type */
-            ->getFileLogger($loggerName, $filePath, $logLevel, $maxFiles, $specialHandlers);
-    }
-
-    /**
-     * @deprecated use LoggerFactory::getFileLoggerStreamHandler
-     * @param string $filePath
-     * @param int $logLevel
-     * @param int|null $maxFiles
-     * @return AbstractProcessingHandler
-     * @throws Exception
-     */
-    public function getFileLoggerStreamHandler(
-        string $filePath,
-        int $logLevel = Logger::INFO,
-        ?int $maxFiles = null
-    ): AbstractProcessingHandler {
-        return $this->getLoggerFactory()->getFileLoggerStreamHandler($filePath, $logLevel, $maxFiles);
-    }
 
     public function addConfiguredLogger(LoggerInterface $logger): void
     {
