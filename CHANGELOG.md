@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Public/guzzleFactory/compare/1.2.0...rel_1.x)
+## [Unreleased](https://git.d3data.de/D3Public/guzzleFactory/compare/2.0.0...rel_2.x)
+
+## [2.0.0](https://git.d3data.de/D3Public/guzzleFactory/compare/1.2.0...2.0.0) - 2025-02-10
+### removed
+- creating logger via LoggerFactory - add configured logger using the `addConfiguredLogger` method
+- OXID dependend code - can use from third party LoggerFactory library instead
 
 ## [1.2.0](https://git.d3data.de/D3Public/guzzleFactory/compare/1.1.0...1.2.0) - 2025-02-10
 ### Added
