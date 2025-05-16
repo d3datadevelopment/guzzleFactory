@@ -32,7 +32,6 @@ class GuzzleFactoryTest extends ApiTestCase
     use HeaderTestTrait;
     use LoggerTestTrait;
     use MessageFormatterTestTrait;
-    use OxidLoggerTestTrait;
 
     /**
      * @test
