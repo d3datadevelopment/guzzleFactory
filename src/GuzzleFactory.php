@@ -52,6 +52,7 @@ class GuzzleFactory
 
         foreach ($this->getLoggers() as $logger) {
             /** @var 'alert'|'critical'|'debug'|'emergency'|'error'|'info'|'notice'|'warning' $logLevelName */
+            /** @phpstan-ignore-next-line */
             $logLevelName = Logger::getLevelName($this->getMessageLevel());
             $stack->push(
                 Middleware::log(
