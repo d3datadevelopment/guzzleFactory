@@ -29,6 +29,7 @@ jobs:
           php_version: ${{ matrix.php-version }}
           syntax_check_paths: "src,tests"
           test_suites: "GuzzleFactory"
+          debug: ${{ runner.debug }}
 
   report-status:
     runs-on: ubuntu-latest
